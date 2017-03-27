@@ -5,8 +5,8 @@
 #relative_permalinks: true
 
 # Setup
-title:               Sarcar
-tagline:             'Not all who are garbage collected are dead'
+title:               sarcar.github.io
+tagline:             'Not all who wander are lost'
 description:         'A reserved <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that places the utmost gravity on content with a hidden drawer. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
 url:                 http://sarcar.github.io
 baseurl:             ''
