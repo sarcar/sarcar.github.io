@@ -1,6 +1,6 @@
 ---
 layout: post
-title: This is test post in markdown
+title: Pass by behavior, not value
 ---
 
 
@@ -35,15 +35,40 @@ public void longTermArchive(Message msg) {
 }
 
 ```
-Observe that the actual writing to disk happens only if the <archiveFlag> is <strong>true</strong>.
+Observe that the actual writing to disk happens only when the <code>archive</code> flag is set to <strong>true</strong>.
+Now assume that the <code> Message </code> object being passed is created by another function <code>createMessageFromBuffer</code>,
+which is - <em>and here is the where things get interesting</em> is <strong>expensive</strong>. 
+
+It takes a long time to execute. 
 
 
 ```java
-archiver.longTermArchive(createMessageFromGlobalBuffer());
-```
-However, the function <code> longTermArchive</code> is internally activated only when the <code>archive</code>flag is set to <code>true</code>.
 
-Remember Java passes arguments by value and so the <code>createMEssageFromGlobalBuffer</code> will be first executed, regardless of whether finally we archive to long-term storage. If the function <code>createMessageFromGlobalBuffer</code> is expensive, then we are in for a performance hit.
+/*createMessageFromGlobalBuffer() is a time-intensive function */
+longTermArchive(createMessageFromGlobalBuffer());
+
+```
+
+Remember, Java passes arguments by value and so the <code>createMessageFromGlobalBuffer()</code> function will be first executed, the value put on the stack and then copied over to the <code>longTermArchive</code> function. This is regardless of the state of the <code> archiveFlag</code> ; to which our message creating function may not even have visibility.
+
+The problem is obvious. We are spending time and resources executing a function and passing the value into another function, when it may not even have been needed.
+
+Instead, if we could just pass the behaviour, that is a reference to the function to be called ! Ah, now that is what a <em>pointer-to-a-function</em> was in the good old C/C++ days. Chances are, it would look like this
+
+```java
+
+longTermArchive(reference_to_the_expensive_message_creating_function);
+// Now, we know that will not compile. So, how about:
+
+longTermArchive(&createMessageFromGlobalBuffer);
+// well, this is how it woudl be in C, passing the addr of a fn
+
+
+longTermArchive(() -> createMessageFromGlobalBuffer());
+// In Java .... and I never said it would look elegant
+
+
+```
 
 
 
