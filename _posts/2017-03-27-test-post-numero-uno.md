@@ -6,7 +6,7 @@ title: Pass by behavior, not value
 
 <div class="message">
 “Programs must be written for people to read, 
-and only incidentally for machines to execute.” 
+and only incidentally for machines to execute.” <br/>
 
 ~  Harold Abelson, Structure and Interpretation of Computer Programs
 </div>
@@ -66,7 +66,6 @@ longTermArchive(&createMessageFromGlobalBuffer);
 
 longTermArchive(() -> createMessageFromGlobalBuffer());
 // In Java .... and I never said it would look elegant
-
 
 ```
 
