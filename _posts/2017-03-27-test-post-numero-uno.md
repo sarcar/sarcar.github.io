@@ -15,6 +15,8 @@ Java 8 introduced Lambdas. It was a significant departure in terms of code writi
 
 ```java
 (s) -> sum(s)
+```
+
 
 
 -----
